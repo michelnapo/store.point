@@ -1,0 +1,11 @@
+{
+  "version": 0.1,
+  "target": "blogsoftware.point",
+  "keyvalue": {},
+  "contracts": [
+    "Blog"
+  ],
+  "upgradable": true,
+  "pointSDKVersion": "0.0.10",
+  "pointNodeVersion": "0.1.78"
+}
