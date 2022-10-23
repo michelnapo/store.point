@@ -9,6 +9,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+// Import social.point codebase
+import "social-point-contracts/contracts/PointSocial.sol";
+
 // To be used when getting Store contract.
 interface IStore 
 {
