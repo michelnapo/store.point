@@ -1,9 +1,9 @@
 {
   "version": 0.1,
-  "target": "blogsoftware.point",
+  "target": "store.point",
   "keyvalue": {},
   "contracts": [
-    "Blog"
+    "Store"
   ],
   "upgradable": true,
   "pointSDKVersion": "0.0.10",
