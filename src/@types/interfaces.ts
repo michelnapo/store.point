@@ -1,5 +1,5 @@
-import {ChangeEvent, Dispatch, ReactEventHandler, SetStateAction} from 'react';
-import {Theme} from './types';
+import { ChangeEvent, Dispatch, ReactEventHandler, SetStateAction } from "react";
+import { Theme } from "./types";
 
 export interface ButtonProps {
   children: string;
@@ -71,6 +71,6 @@ export interface UserInfoState {
 }
 
 export interface ToastNotification {
-  color: 'green-500' | 'red-500';
+  color: "green-500" | "red-500";
   message: string;
 }

@@ -1,10 +1,10 @@
-import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
-import CreateProfile from './pages/CreateProfile';
-import Settings from './pages/Settings';
-import ToastNotification from './components/ToastNotification';
-import {ProvideAppContext} from './context/AppContext';
-import {RoutesEnum} from './@types/enums';
-import ColorImports from './components/ColorImports';
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import CreateProfile from "./pages/CreateProfile";
+import Settings from "./pages/Settings";
+import ToastNotification from "./components/ToastNotification";
+import { ProvideAppContext } from "./context/AppContext";
+import { RoutesEnum } from "./@types/enums";
+import ColorImports from "./components/ColorImports";
 
 const Main = () => (
   <Routes>

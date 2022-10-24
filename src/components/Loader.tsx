@@ -1,8 +1,8 @@
-import RefreshIcon from '@mui/icons-material/Refresh';
-import {useAppContext} from '../context/AppContext';
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { useAppContext } from "../context/AppContext";
 
-const Loader = ({children}: { children: string }) => {
-  const {theme} = useAppContext();
+const Loader = ({ children }: { children: string }) => {
+  const { theme } = useAppContext();
 
   return (
     <div className='flex items-center'>

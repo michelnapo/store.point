@@ -1,14 +1,14 @@
-import {useState, SetStateAction, Dispatch} from 'react';
-import {BlogContract} from '../@types/enums';
+import { useState, SetStateAction, Dispatch } from "react";
+import { BlogContract } from "../@types/enums";
 import {
   Blog,
   BlogContractData,
   BlogsState,
   ToastNotification
-} from '../@types/interfaces';
-import utils from './utils';
+} from "../@types/interfaces";
+import utils from "./utils";
 
-const useBlogs = ({setToast}: {
+const useBlogs = ({ setToast }: {
   setToast: Dispatch<SetStateAction<ToastNotification>>;
 }) => {
   const [blogs, setBlogs] = useState<BlogsState>({
@@ -18,9 +18,9 @@ const useBlogs = ({setToast}: {
 
   const getAllBlogs = async () => {
     try {
-      setBlogs((prev) => ({...prev, loading: true}));
+      setBlogs((prev) => ({ ...prev, loading: true }));
 
-      const {data}: { data: any[] } = await window.point.contract.call({
+      const { data }: { data: any[] } = await window.point.contract.call({
         contract: BlogContract.name,
         method: BlogContract.getAllBlogs
       });
@@ -46,18 +46,18 @@ const useBlogs = ({setToast}: {
           } as Blog & BlogContractData;
         })
       );
-      setBlogs({loading: false, data: blogs});
+      setBlogs({ loading: false, data: blogs });
     } catch (error) {
       setToast({
-        color: 'red-500',
-        message: 'Failed to load blog posts. Please reload the page'
+        color: "red-500",
+        message: "Failed to load blog posts. Please reload the page"
       });
     }
   };
 
   const getDeletedBlogs = async () => {
     try {
-      const {data}: { data: any[] } = await window.point.contract.call({
+      const { data }: { data: any[] } = await window.point.contract.call({
         contract: BlogContract.name,
         method: BlogContract.getDeletedBlogs
       });
@@ -77,13 +77,13 @@ const useBlogs = ({setToast}: {
       return blogs;
     } catch (error) {
       setToast({
-        color: 'red-500',
-        message: 'Failed to load deleted blog posts. Please reload the page'
+        color: "red-500",
+        message: "Failed to load deleted blog posts. Please reload the page"
       });
     }
   };
 
-  return {blogs, getAllBlogs, getDeletedBlogs};
+  return { blogs, getAllBlogs, getDeletedBlogs };
 };
 
 export default useBlogs;

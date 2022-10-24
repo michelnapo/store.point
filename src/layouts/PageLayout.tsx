@@ -1,8 +1,8 @@
-import Loader from '../components/Loader';
-import {useAppContext} from '../context/AppContext';
+import Loader from "../components/Loader";
+import { useAppContext } from "../context/AppContext";
 
-const PageLayout = ({children}: { children: any }) => {
-  const {loading, theme} = useAppContext();
+const PageLayout = ({ children }: { children: any }) => {
+  const { loading, theme } = useAppContext();
 
   return (
     <div className={`bg-${theme[0]} text-${theme[2]} min-h-screen`}>

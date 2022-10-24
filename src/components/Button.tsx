@@ -1,12 +1,12 @@
-import {ButtonProps} from '../@types/interfaces';
-import {useAppContext} from '../context/AppContext';
+import { ButtonProps } from "../@types/interfaces";
+import { useAppContext } from "../context/AppContext";
 
 const PrimaryButton = ({
   children,
   disabled = false,
   onClick
 }: ButtonProps) => {
-  const {theme} = useAppContext();
+  const { theme } = useAppContext();
   return (
     <button
       onClick={onClick}
@@ -23,7 +23,7 @@ const OutlinedButton = ({
   disabled = false,
   onClick
 }: ButtonProps) => {
-  const {theme} = useAppContext();
+  const { theme } = useAppContext();
   return (
     <button
       onClick={onClick}
@@ -35,7 +35,7 @@ const OutlinedButton = ({
   );
 };
 
-const ErrorButton = ({children, disabled = false, onClick}: ButtonProps) => (
+const ErrorButton = ({ children, disabled = false, onClick }: ButtonProps) => (
   <button
     onClick={onClick}
     disabled={disabled}
@@ -45,4 +45,4 @@ const ErrorButton = ({children, disabled = false, onClick}: ButtonProps) => (
   </button>
 );
 
-export {PrimaryButton, ErrorButton, OutlinedButton};
+export { PrimaryButton, ErrorButton, OutlinedButton };

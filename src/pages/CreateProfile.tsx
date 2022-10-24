@@ -1,20 +1,20 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import {OutlinedButton, PrimaryButton} from '../components/Button';
-import {useNavigate} from 'react-router-dom';
-import {useAppContext} from '../context/AppContext';
-import PageLayout from '../layouts/PageLayout';
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import {BlogContract, RoutesEnum} from '../@types/enums';
-import {UserInfo} from '../@types/interfaces';
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { OutlinedButton, PrimaryButton } from "../components/Button";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
+import PageLayout from "../layouts/PageLayout";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import { BlogContract, RoutesEnum } from "../@types/enums";
+import { UserInfo } from "../@types/interfaces";
 
-const CreateProfile = ({edit}: { edit?: boolean }) => {
+const CreateProfile = ({ edit }: { edit?: boolean }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [avatar, setAvatar] = useState<Blob | null>(null);
-  const [about, setAbout] = useState<string>('');
+  const [about, setAbout] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const {ownerAddress, userInfo, getUserInfo, getAllBlogs, theme, setToast} =
+  const { ownerAddress, userInfo, getUserInfo, getAllBlogs, theme, setToast } =
     useAppContext();
 
   const getInitialData = async () => {
@@ -22,7 +22,7 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
       setLoading(true);
       setAbout(userInfo.data.about);
       if (userInfo.data.avatar) {
-        const blob = await window.point.storage.getFile({id: userInfo.data.avatar});
+        const blob = await window.point.storage.getFile({ id: userInfo.data.avatar });
         setAvatar(blob);
       }
       setLoading(false);
@@ -40,21 +40,21 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
   const handleFinish = async () => {
     setLoading(true);
     try {
-      let avatarImage = '';
+      let avatarImage = "";
       if (avatar) {
         const avatarFormData = new FormData();
-        avatarFormData.append('files', avatar);
-        const {data} = await window.point.storage.postFile(avatarFormData);
+        avatarFormData.append("files", avatar);
+        const { data } = await window.point.storage.postFile(avatarFormData);
         avatarImage = data;
       }
       const form = JSON.stringify({
         avatar: avatarImage,
         about
       } as UserInfo);
-      const file = new File([form], 'user.json', {type: 'application/json'});
+      const file = new File([form], "user.json", { type: "application/json" });
 
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append("files", file);
       // Upload the File to arweave
       const res = await window.point.storage.postFile(formData);
       setLoading(false);
@@ -64,15 +64,15 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
         method: BlogContract.saveUserInfo,
         params: [ownerAddress, res.data]
       });
-      setToast({color: 'green-500', message: 'Profile saved successfully'});
+      setToast({ color: "green-500", message: "Profile saved successfully" });
       getUserInfo();
       getAllBlogs();
       navigate(RoutesEnum.admin);
     } catch (error) {
       setLoading(false);
       setToast({
-        color: 'red-500',
-        message: 'Failed to save the profile. Please try again'
+        color: "red-500",
+        message: "Failed to save the profile. Please try again"
       });
     }
   };
@@ -80,14 +80,14 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
   return (
     <PageLayout>
       <header className={`py-3 sticky top-0 bg-${theme[0]} shadow z-10`}>
-        <div className='mx-auto' style={{maxWidth: '1000px'}}>
+        <div className='mx-auto' style={{ maxWidth: "1000px" }}>
           {/* Logo will go here */}
           <span className='font-medium'>Blog</span>
         </div>
       </header>
-      <main className='mt-8 mx-auto' style={{maxWidth: '1000px'}}>
+      <main className='mt-8 mx-auto' style={{ maxWidth: "1000px" }}>
         <h1 className='text-3xl font-bold mb-6'>
-          {edit ? 'Update' : 'Complete'} Your Profile teste
+          {edit ? "Update" : "Complete"} Your Profile teste
         </h1>
         <div className='flex mb-8'>
           <div className='mr-24'>
@@ -95,7 +95,7 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
             {!avatar ? (
               <div className='h-56 w-56 p-8 rounded-full border-2 bg-gray-100 border-gray-300 flex flex-col items-center justify-center relative overflow-hidden'>
                 <ImageOutlinedIcon
-                  sx={{height: 42, width: 42}}
+                  sx={{ height: 42, width: 42 }}
                   className='text-gray-500'
                 />
                 <p className='text-gray-500 mt-1'>Click to Upload</p>
@@ -150,7 +150,7 @@ const CreateProfile = ({edit}: { edit?: boolean }) => {
                 disabled={!avatar || !about || loading}
                 onClick={handleFinish}
               >
-                {loading ? 'Please Wait' : edit ? 'Update Profile' : 'Finish'}
+                {loading ? "Please Wait" : edit ? "Update Profile" : "Finish"}
               </PrimaryButton>
               {edit ? (
                 <OutlinedButton onClick={() => navigate(-1)}>

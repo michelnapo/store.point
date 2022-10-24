@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App.tsx';
-import reportWebVitals from './reportWebVitals';
-import './custom.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.tsx";
+import reportWebVitals from "./reportWebVitals";
+import "./custom.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
