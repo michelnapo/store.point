@@ -1,10 +1,10 @@
 import {useNavigate} from 'react-router-dom';
 import {RoutesEnum} from '../@types/enums';
 import {useAppContext} from '../context/AppContext';
-import {OutlinedButton, PrimaryButton} from './Button';
 
-const Header = () => {
-  const {isOwner, theme} = useAppContext();
+const SettingsHeader = () => {
+  // const {isOwner, theme} = useAppContext();
+  const {theme} = useAppContext();
 
   const navigate = useNavigate();
 
@@ -21,19 +21,9 @@ const Header = () => {
           {/* Logo will go here */}
           <span className='text-4xl font-bold'>Point Store</span>
         </div>
-        {isOwner ? (
-          <div className='flex items-center space-x-2'>
-            <OutlinedButton onClick={() => navigate(RoutesEnum.customize)}>
-              Customize
-            </OutlinedButton>
-            <PrimaryButton onClick={() => navigate(RoutesEnum.admin)}>
-              Manage Your Blog
-            </PrimaryButton>
-          </div>
-        ) : null}
       </div>
     </header>
   );
 };
 
-export default Header;
+export default SettingsHeader;

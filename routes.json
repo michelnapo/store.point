@@ -6,5 +6,6 @@
     "/admin": "index.html",
     "/profile": "index.html",
     "/edit_profile": "index.html",
-    "/customize": "index.html"
+    "/customize": "index.html",
+    "/settings": "index.html"
 }

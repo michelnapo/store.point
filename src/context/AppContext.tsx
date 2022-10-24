@@ -88,12 +88,12 @@ export const ProvideAppContext = ({children}: { children: any }) => {
       const visitorIsOwner = visitor.toLowerCase() === owner.toLowerCase();
       setIsOwner(visitorIsOwner);
 
-      const hash = await getUserInfo();
-      if (!hash && visitorIsOwner) {
-        navigate(RoutesEnum.profile, {replace: true});
-      } else {
-        Blogs.getAllBlogs();
-      }
+      // const hash = await getUserInfo();
+      // if (!hash && visitorIsOwner) {
+      //   navigate(RoutesEnum.profile, {replace: true});
+      // } else {
+      //   Blogs.getAllBlogs();
+      // }
 
       setLoading(false);
     })();

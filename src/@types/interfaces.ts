@@ -1,10 +1,15 @@
-import {Dispatch, ReactEventHandler, SetStateAction} from 'react';
+import {ChangeEvent, Dispatch, ReactEventHandler, SetStateAction} from 'react';
 import {Theme} from './types';
 
 export interface ButtonProps {
   children: string;
   disabled?: boolean;
   onClick?: ReactEventHandler;
+}
+
+export interface InputProps {
+  style?: string;
+  onChange?: (evt: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface AppContentInterface {
