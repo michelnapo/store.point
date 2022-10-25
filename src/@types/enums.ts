@@ -34,5 +34,6 @@ export enum RoutesEnum {
   profile = "/profile",
   edit_profile = "/edit_profile",
   customize = "/customize",
+  create_store = "/create_store",
   settings = "/settings"
 }

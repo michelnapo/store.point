@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import Loader from "../components/Loader";
 import { useAppContext } from "../context/AppContext";
 
-const PageLayout = ({ children }: { children: any }) => {
+const PageLayout = ({ children }: { children: ReactNode }) => {
   const { loading, theme } = useAppContext();
 
   return (

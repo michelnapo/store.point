@@ -10,6 +10,7 @@ export interface ButtonProps {
 export interface InputProps {
   style?: string;
   onChange?: (evt: ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
 }
 
 export interface AppContentInterface {
