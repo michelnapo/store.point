@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 
 import "./StoreTypes.sol";
@@ -21,8 +20,7 @@ contract Store is
     IStore,
     Initializable, 
     UUPSUpgradeable, 
-    OwnableUpgradeable, 
-    ReentrancyGuard 
+    OwnableUpgradeable
 {
     
     function initialize() public initializer onlyProxy {
@@ -41,7 +39,8 @@ contract Store is
     Counters.Counter internal _tokenIds;
 
     Theme theme;
-
+    StoreInfo store;
+    
     // Product Arrays and Mappings
     mapping(uint256 => Product) public tokenIdToProduct;
 
@@ -100,11 +99,19 @@ contract Store is
     }
 
     // Method for setting store theme
-    function setTheme(string calldata _background, string calldata _primary, string calldata _text) public payable {
+    function setTheme(string calldata _background, string calldata _primary, string calldata _text) public {
         theme = Theme({
             background: _background,
             primary: _primary,
             text: _text
         });
+    }
+
+    function setStoreConfig(string calldata _name, string calldata _description, string calldata _logo) public {
+      store = StoreInfo({
+          name: _name,
+          description: _description,
+          logo: _logo
+      });
     }
 }
