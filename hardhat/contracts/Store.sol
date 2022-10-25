@@ -10,6 +10,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 
 import "./StoreTypes.sol";
+import "./SocialCommentsTypes.sol";
+import {ISocialCommentsClient, ISocialComments} from "./SocialComments.sol";
 
 // To be used when getting Store contract.
 interface IStore 
@@ -20,7 +22,8 @@ contract Store is
     IStore,
     Initializable, 
     UUPSUpgradeable, 
-    OwnableUpgradeable 
+    OwnableUpgradeable,
+    ISocialCommentsClient
 {
     
     function initialize() public initializer onlyProxy {
@@ -43,6 +46,8 @@ contract Store is
     // Product Arrays and Mappings
     mapping(uint256 => Product) public tokenIdToProduct;
 
+    address _commentsAddr; 
+    ISocialComments _commentsContract;
 
     // Events
     event NewStoreEvent(
@@ -69,6 +74,11 @@ contract Store is
     );
 
     function _authorizeUpgrade(address) internal override onlyOwner {}
+
+    function setCommentsAddr(address commentsContractAddr) public onlyOwner {
+        _commentsAddr = commentsContractAddr;
+        _commentsContract = ISocialComments(_commentsAddr);
+    }
 
     function addProductToStore(
         string memory name,
@@ -104,5 +114,17 @@ contract Store is
             primary: _primary,
             text: _text
         });
+    }
+
+    function getSomeData(string memory someParameter) external override view returns(SomeDataStructure memory){
+        return SomeDataStructure(0, "");
+    }
+
+    function setSomeData(SomeDataStructure memory param) external override {
+
+    }
+
+    function useCommentsForSomething() public {
+        _commentsContract.doSomethingWithComments();
     }
 }
