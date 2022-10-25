@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 
 import "./StoreTypes.sol";
@@ -21,8 +20,7 @@ contract Store is
     IStore,
     Initializable, 
     UUPSUpgradeable, 
-    OwnableUpgradeable, 
-    ReentrancyGuard 
+    OwnableUpgradeable 
 {
     
     function initialize() public initializer onlyProxy {

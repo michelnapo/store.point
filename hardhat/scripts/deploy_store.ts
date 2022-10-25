@@ -6,11 +6,11 @@
 import {ethers, upgrades} from 'hardhat';
 
 async function main() {
-    const StoreFactory = await ethers.getContractFactory('StoreFactory');
-    const storeFactory = await upgrades.deployProxy(StoreFactory, [], {kind: 'uups'});
-    await storeFactory.deployed();
+    const Store = await ethers.getContractFactory('Store');
+    const store = await upgrades.deployProxy(Store, [], {kind: 'uups'});
+    await store.deployed();
 
-    console.log('StoreFactory deployed to:', storeFactory.address);
+    console.log('Store deployed to:', store.address);
 }
 
 main().catch((error) => {
