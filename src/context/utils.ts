@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const getWalletAddress = async () => {
   const { data: { address } } = await window.point.wallet.address();
   return address;

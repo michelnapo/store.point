@@ -3,8 +3,7 @@ import { RoutesEnum } from "../@types/enums";
 import { useAppContext } from "../context/AppContext";
 
 const SettingsHeader = () => {
-  // const {isOwner, theme} = useAppContext();
-  const { theme } = useAppContext();
+  const { isOwner, theme } = useAppContext();
 
   const navigate = useNavigate();
 

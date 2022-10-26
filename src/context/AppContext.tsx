@@ -1,40 +1,37 @@
+import type { ReactNode } from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   AppContentInterface,
-  ToastNotification,
-  UserInfoState
+  ToastNotification
+  // UserInfoState
 } from "../@types/interfaces";
-import { BlogContract, RoutesEnum } from "../@types/enums";
-import { useNavigate } from "react-router-dom";
+import { StoreContract /* RoutesEnum */ } from "../@types/enums";
+// import { useNavigate } from "react-router-dom";
 import utils from "./utils";
-import useBlogs from "./useBlogs";
 import { Theme } from "../@types/types";
 
 const AppContext = createContext({
-  toast: { color: "green-500", message: "" },
-  setToast: () => {},
-  loading: true,
-  isOwner: false,
-  blogs: { loading: true, data: [] },
-  setBlogs: () => {},
-  userInfo: {
-    loading: true,
-    data: { about: "", walletAddress: "", dataStorageHash: "", avatar: "" }
-  },
   getUserInfo: () => {},
-  getAllBlogs: () => {},
-  getDeletedBlogs: async () => [],
-  getDataFromStorage: async () => {},
-  ownerIdentity: "",
-  visitorAddress: "",
+  isOwner: false,
+  loading: true,
   ownerAddress: "",
+  ownerIdentity: "",
+  setTheme: () => {},
+  setToast: () => {},
+  theme: ["", "", ""],
+  toast: { color: "green-500", message: "" },
+  // userInfo: {
+  //   loading: true,
+  //   data: { about: "", walletAddress: "", dataStorageHash: "", avatar: "" }
+  // },
+  visitorAddress: "",
   visitorIdentity: ""
 } as AppContentInterface);
 
 export const useAppContext = () => useContext(AppContext);
 
-export const ProvideAppContext = ({ children }: { children: any }) => {
-  const navigate = useNavigate();
+export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
+  // const navigate = useNavigate();
 
   const [toast, setToast] = useState<ToastNotification>({
     color: "green-500",
@@ -42,36 +39,36 @@ export const ProvideAppContext = ({ children }: { children: any }) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<UserInfoState>({
-    loading: true,
-    data: {
-      walletAddress: "",
-      about: "",
-      avatar: "",
-      dataStorageHash: ""
-    }
-  });
+  // const [userInfo, setUserInfo] = useState<UserInfoState>({
+  //   loading: true,
+  //   data: {
+  //     walletAddress: "",
+  //     about: "",
+  //     avatar: "",
+  //     dataStorageHash: ""
+  //   }
+  // });
   const [visitorAddress, setVisitorAddress] = useState<string>("");
   const [visitorIdentity, setVisitorIdentity] = useState<string>("");
   const [ownerAddress, setOwnerAddress] = useState<string>("");
   const [ownerIdentity, setOwnerIdentity] = useState<string>("");
   const [theme, setTheme] = useState<Theme>(["white", "indigo", "black"]);
 
-  const Blogs = useBlogs({ setToast });
+  // const Blogs = useBlogs({ setToast });
 
   useEffect(() => {
     (async () => {
       setLoading(true);
 
       const { data }: { data: Theme } = await window.point.contract.call({
-        contract: BlogContract.name,
-        method: BlogContract.getTheme
+        contract: StoreContract.name,
+        method: StoreContract.getTheme
       });
       setTheme(data);
 
       const { data: owner } = await window.point.contract.call({
-        contract: BlogContract.name,
-        method: BlogContract.owner,
+        contract: StoreContract.name,
+        method: StoreContract.owner,
         params: []
       });
       setOwnerAddress(owner);
@@ -99,24 +96,24 @@ export const ProvideAppContext = ({ children }: { children: any }) => {
     })();
   }, []);
 
-  const getUserInfo = async () => {
-    setUserInfo((prev) => ({ ...prev, loading: true }));
-
-    const { data: [walletAddress, dataStorageHash] }: { data: [walletAddress: string, dataStorageHash: string] } =
-      await window.point.contract.call({
-        contract: BlogContract.name,
-        method: BlogContract.getUserInfo
-      });
-    if (dataStorageHash) {
-      const data = await utils.getDataFromStorage(dataStorageHash);
-      setUserInfo((prev) => ({
-        ...prev,
-        loading: false,
-        data: { ...data, walletAddress, dataStorageHash }
-      }));
-    }
-    return dataStorageHash;
-  };
+  // const getUserInfo = async () => {
+  //   setUserInfo((prev) => ({ ...prev, loading: true }));
+  //
+  //   const { data: [walletAddress, dataStorageHash] }: { data: [walletAddress: string, dataStorageHash: string] } =
+  //     await window.point.contract.call({
+  //       contract: BlogContract.name,
+  //       method: BlogContract.getUserInfo
+  //     });
+  //   if (dataStorageHash) {
+  //     const data = await utils.getDataFromStorage(dataStorageHash);
+  //     setUserInfo((prev) => ({
+  //       ...prev,
+  //       loading: false,
+  //       data: { ...data, walletAddress, dataStorageHash }
+  //     }));
+  //   }
+  //   return dataStorageHash;
+  // };
 
   return (
     <AppContext.Provider
@@ -125,12 +122,11 @@ export const ProvideAppContext = ({ children }: { children: any }) => {
         setToast,
         loading,
         isOwner,
-        ...Blogs,
         visitorAddress,
         ownerAddress,
         ownerIdentity,
-        getUserInfo,
-        userInfo,
+        // getUserInfo,
+        // userInfo,
         visitorIdentity,
         getDataFromStorage: utils.getDataFromStorage,
         theme,

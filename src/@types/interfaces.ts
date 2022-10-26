@@ -11,49 +11,24 @@ export interface InputProps {
   style?: string;
   onChange?: (evt: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
+  value?: string;
 }
 
 export interface AppContentInterface {
-  toast: ToastNotification;
-  setToast: Dispatch<SetStateAction<ToastNotification>>;
-  loading: boolean;
+  getUserInfo?: () => void;
+  getDataFromStorage?: (storageHash: string) => Promise<any>;
   isOwner: boolean;
-  userInfo: UserInfoState;
-  getUserInfo: () => void;
-  blogs: BlogsState;
-  getAllBlogs: () => void;
-  getDeletedBlogs: () => Promise<(Blog & BlogContractData)[]>;
-  getDataFromStorage: (storageHash: string) => any;
+  loading: boolean;
   ownerAddress: string;
   ownerIdentity: string;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+  setToast: Dispatch<SetStateAction<ToastNotification>>;
+  theme: Theme;
+  toast?: ToastNotification;
   visitorAddress: string;
   visitorIdentity: string;
-  theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>>;
 }
 
-export interface BlogsState {
-  loading: boolean;
-  data: (Blog & BlogContractData)[];
-  error?: string;
-}
-
-export interface Blog {
-  coverImage: string;
-  title: string;
-  content: string;
-  publisher: string;
-  createdDate: string;
-}
-
-export interface BlogContractData {
-  id: number;
-  storageHash: string;
-  isPublished: boolean;
-  publishDate: string;
-  previousStorageHashes: string[];
-  tags: string;
-}
 
 export interface UserInfo {
   avatar: string;

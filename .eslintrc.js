@@ -26,6 +26,12 @@ module.exports = {
     ".webpack",
     "build_installer_win.js"
   ],
+  overrides: [
+    {
+      files: ["*.jsx", "*.tsx"],
+      rules: { "@typescript-eslint/explicit-module-boundary-types": ["off"] }
+    }
+  ],
   rules: {
     "curly": ["error", "multi-line"],
     "react/prop-types": "off",
@@ -76,7 +82,7 @@ module.exports = {
     "no-bitwise": "off",
     "no-caller": "error",
     "no-useless-return": "error",
-    "no-duplicate-imports": "error",
+    "no-duplicate-imports": "off",
     "no-unused-expressions": "error",
     "arrow-body-style": ["error", "as-needed"],
     "prefer-arrow/prefer-arrow-functions": [
@@ -100,8 +106,8 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/no-this-alias": "error",
-    "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-empty-function": ["error", { allow: ["arrowFunctions"] }],
+    "@typescript-eslint/no-explicit-any": "warn",
     "no-shadow": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "no-unused-vars": "off",
