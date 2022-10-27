@@ -1,4 +1,5 @@
 import { ChangeEvent, Dispatch, ReactEventHandler, SetStateAction } from "react";
+import { FetchStatus } from "./enums";
 import { Theme } from "./types";
 
 export interface ButtonProps {
@@ -15,6 +16,8 @@ export interface InputProps {
 }
 
 export interface AppContentInterface {
+  getStoreConfig: () => Promise<{ status: FetchStatus, message: string }>;
+  storeConfig: StoreConfigState;
   getUserInfo?: () => void;
   getDataFromStorage?: (storageHash: string) => Promise<any>;
   isOwner: boolean;
@@ -29,10 +32,20 @@ export interface AppContentInterface {
   visitorIdentity: string;
 }
 
+export interface StoreConfigData {
+  name: string;
+  description: string;
+  logo: string;
+}
 
 export interface UserInfo {
   avatar: string;
   about: string;
+}
+
+export interface StoreConfigState {
+  loading: boolean;
+  data: StoreConfigData;
 }
 
 export interface UserInfoContractData {

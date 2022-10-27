@@ -1,23 +1,32 @@
 import type { ReactNode } from "react";
+import type { StoreConfigState } from "../@types/interfaces";
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   AppContentInterface,
   ToastNotification
   // UserInfoState
 } from "../@types/interfaces";
-import { StoreContract /* RoutesEnum */ } from "../@types/enums";
+import { StoreContract, FetchStatus /* RoutesEnum */ } from "../@types/enums";
 // import { useNavigate } from "react-router-dom";
 import utils from "./utils";
 import { Theme } from "../@types/types";
 
 const AppContext = createContext({
-  getUserInfo: () => {},
+  getStoreConfig: () => (
+    Promise.resolve({ status: FetchStatus.ready, message: "Ready" })
+  ),
   isOwner: false,
   loading: true,
   ownerAddress: "",
   ownerIdentity: "",
   setTheme: () => {},
   setToast: () => {},
+  storeConfig: {
+    loading: true,
+    data: { name: "", description: "", logo: "" },
+    status: FetchStatus.ready,
+    message: "ready"
+  },
   theme: ["", "", ""],
   toast: { color: "green-500", message: "" },
   // userInfo: {
@@ -53,6 +62,10 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
   const [ownerAddress, setOwnerAddress] = useState<string>("");
   const [ownerIdentity, setOwnerIdentity] = useState<string>("");
   const [theme, setTheme] = useState<Theme>(["white", "indigo", "black"]);
+  const [storeConfig, setStoreConfig] = useState<StoreConfigState>({
+    loading: true,
+    data: { name: "", description: "", logo: "" }
+  });
 
   // const Blogs = useBlogs({ setToast });
 
@@ -96,24 +109,38 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
     })();
   }, []);
 
-  // const getUserInfo = async () => {
-  //   setUserInfo((prev) => ({ ...prev, loading: true }));
-  //
-  //   const { data: [walletAddress, dataStorageHash] }: { data: [walletAddress: string, dataStorageHash: string] } =
-  //     await window.point.contract.call({
-  //       contract: BlogContract.name,
-  //       method: BlogContract.getUserInfo
-  //     });
-  //   if (dataStorageHash) {
-  //     const data = await utils.getDataFromStorage(dataStorageHash);
-  //     setUserInfo((prev) => ({
-  //       ...prev,
-  //       loading: false,
-  //       data: { ...data, walletAddress, dataStorageHash }
-  //     }));
-  //   }
-  //   return dataStorageHash;
-  // };
+  const getStoreConfig = async () => {
+    setStoreConfig((prevState) => ({ ...prevState, loading: true }));
+
+    try {
+      const { data } = await window.point.contract.call({
+        contract: StoreContract.name,
+        method: StoreContract.getStoreConfig
+      });
+      const [name, description, logo] = data;
+
+      setStoreConfig((prevState) => ({
+        ...prevState,
+        loading: false,
+        data: { name: name, description: description, logo: logo }
+      }));
+      
+      return {
+        status: FetchStatus.success,
+        message: "Store config fetched successfully"
+      };
+    } catch (error) {
+      setStoreConfig((prevState) => ({
+        ...prevState,
+        loading: false
+      }));
+
+      return {
+        status: FetchStatus.error,
+        message: `The following error has ocurred when fetching store config: ${JSON.stringify(error)}`
+      };
+    }
+  };
 
   return (
     <AppContext.Provider
@@ -128,8 +155,10 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
         // getUserInfo,
         // userInfo,
         visitorIdentity,
+        getStoreConfig,
         getDataFromStorage: utils.getDataFromStorage,
         theme,
+        storeConfig,
         setTheme
       }}
     >

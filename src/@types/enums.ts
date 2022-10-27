@@ -1,3 +1,9 @@
+export enum FetchStatus {
+  success = "SUCCESS",
+  error = "ERROR",
+  ready = "READY"
+}
+
 export enum StoreContract {
   name = "Store",
   owner = "owner",
@@ -7,6 +13,7 @@ export enum StoreContract {
   getProductByTokenId = "getProductByTokenId",
   getTheme = "getTheme",
   setTheme = "setTheme",
+  getStoreConfig = "getStoreConfig",
   setStoreConfig = "setStoreConfig",
 }
 

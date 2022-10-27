@@ -1,48 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import { FetchStatus, StoreContract } from "../@types/enums";
 import { SettingsHeader, PrimaryButton, OutlinedButton, TextInput, MainTitle } from "../components";
-import { StoreContract } from "../@types/enums";
 import { StorePictureUploader } from "../appComponents";
 import { checkOnlySpaceOnString } from "../utils";
-import { useAppContext } from "../context/AppContext";
 import PageLayout from "../layouts/PageLayout";
 
 const Settings = () => {
-  const [storeLogo, setStoreLogo] = useState<Blob | null>(null);
   const [storeName, setStoreName] = useState<string>("");
   const [storeDescription, setStoreDescription] = useState<string>("");
+  const [storeLogo, setStoreLogo] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  const navigate = useNavigate();
 
-  const { theme, setToast } = useAppContext();
+  const { theme, setToast, getStoreConfig, storeConfig } = useAppContext();
+
+  useEffect(() => {
+
+    (async () => {
+      const resp = await getStoreConfig();
+      
+      if (resp.status === FetchStatus.error) {
+        alert(`The following error has ocurred: ${resp.message}`);
+      }
+    })();
+    
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { name, description, logo } = storeConfig.data;
+      setStoreName(name);
+      setStoreDescription(description);
+      if (logo) {
+        const logoBlob = await window.point.storage.getFile({ id: logo });
+        setStoreLogo(logoBlob);
+      }
+    })();
+  }, [storeConfig]);
 
   const handlePost = async () => {
     setIsLoading(true);
+    let storeLogoHash = "";
+    if (storeLogo) {
+      const storeLogoFormData = new FormData();
+      storeLogoFormData.append("files", storeLogo);
 
-    try {
-      let storeLogoHash = "";
-      if (storeLogo) {
-        const storeLogoFormData = new FormData();
-        storeLogoFormData.append("files", storeLogo);
-
-        const { data } = await window.point.storage.postFile(storeLogoFormData);
-        storeLogoHash = data;
-      }
-
-      await window.point.contract.send({
-        contract: StoreContract.name,
-        method: StoreContract.setStoreConfig,
-        params: [storeName.trim(), storeDescription.trim(), storeLogoHash]
-      });
-
-      setToast({ color: "green-500", message: "Store settings updated sucessfully" });
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      setToast({
-        color: "red-500",
-        message: "Failed to update store settings. Please try again"
-      });
+      const { data } = await window.point.storage.postFile(storeLogoFormData);
+      storeLogoHash = data;
     }
-    
+
+    await window.point.contract.send({
+      contract: StoreContract.name,
+      method: StoreContract.setStoreConfig,
+      params: [storeName.trim(), storeDescription.trim(), storeLogoHash]
+    });
+
+    setToast({ color: "green-500", message: "Store settings updated sucessfully" });
+
+    setTimeout(() => navigate(0), 3000); 
+    setIsLoading(false);
   };
 
   const checkIfButtonIsDisabled = (): boolean => (
