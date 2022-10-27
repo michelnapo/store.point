@@ -114,4 +114,8 @@ contract Store is
           logo: _logo
       });
     }
+
+    function getStoreConfig() public view returns (StoreInfo memory) {
+        return store;
+    }
 }
