@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import PageLayout from "../layouts/PageLayout";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { BlogContract, RoutesEnum } from "../@types/enums";
+import { RoutesEnum } from "../@types/enums";
 import { UserInfo } from "../@types/interfaces";
 
 const CreateProfile = ({ edit }: { edit?: boolean }) => {
