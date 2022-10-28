@@ -1,3 +1,4 @@
+import ProductList from "./productList/ProductList";
 import StorePictureUploader from "./createStore/StorePictureUploader";
 
-export { StorePictureUploader };
+export { ProductList, StorePictureUploader };
