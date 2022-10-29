@@ -5,6 +5,7 @@ import { ProvideAppContext } from "./context/AppContext";
 import { RoutesEnum } from "./@types/enums";
 import ColorImports from "./components/ColorImports";
 import { AddProduct } from "./pages/Products/AddProduct/AddProduct";
+import { EditProduct } from "./pages/Products/EditProduct/EditProduct";
 
 const Main = () => (
   <Routes>
@@ -14,7 +15,8 @@ const Main = () => (
     <Route path={RoutesEnum.settings} element={<Settings />} />
     <Route path={RoutesEnum.home} element={<Products />} />
     <Route path={RoutesEnum.product_details} element={<ProductDetails />} />
-    <Route path={RoutesEnum.add_product} element={<AddProduct />} />
+    <Route path={RoutesEnum.add_product} element={<AddProduct/>} />
+    <Route path={RoutesEnum.edit_product} element={<AddProduct edit/>} />
   </Routes>
 );
 

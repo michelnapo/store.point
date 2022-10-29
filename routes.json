@@ -1,6 +1,9 @@
 {
     "/": "index.html",
     "/create": "index.html",
+    "/add_product": "index.html",
+    "/edit_product": "index.html",
+    "/product": "index.html",
     "/edit": "index.html",
     "/blog": "index.html",
     "/admin": "index.html",

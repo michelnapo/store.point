@@ -28,5 +28,6 @@ export enum RoutesEnum {
   customize = "/customize",
   create_store = "/create_store",
   add_product= "/add_product",
+  edit_product="/edit_product",
   settings = "/settings"
 }

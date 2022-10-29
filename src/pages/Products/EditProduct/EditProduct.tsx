@@ -2,13 +2,13 @@ import PageLayout from "../../../layouts/PageLayout";
 import { MainTitle, SettingsHeader } from "../../../components";
 import { OutlinedButton, PrimaryButton } from "../../../components/Button";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { ProductInfo } from "../../../@types/interfaces";
 import productImage from "../../../../fake/nft.png";
+import { ProductInfo } from "../../../@types/interfaces";
 import products from "../../../../fake/products.json";
 import { useEffect, useState } from "react";
 
-export const AddProduct = ({edit} : {edit? : boolean}) => {
-  const [product, setProduct] = useState<ProductInfo>();
+export const EditProduct = () => {
+    const [product, setProduct] = useState<ProductInfo>();
 
     function getProduct() {
         const product = products[0] as ProductInfo;
@@ -19,56 +19,27 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
         getProduct();
     }, [])
 
-
     return (
       <>
         <PageLayout>
           <SettingsHeader />
             <main className="mt-12 mx-auto" style={{ maxWidth: "1000px" }}>
-            <MainTitle> {edit ? "Create" : "Register"} Product</MainTitle>
+            <MainTitle> Edit Product</MainTitle>
             <section className="mb-8 mt-10"></section>
             <br />
             <div className="flex flex-row">
               <div>
               <h1 className='text-3xl font-semibold pb-4'>Picture</h1>
-                {edit ? 
-                (
-                  <>
-                    <img
-                    src={productImage}
-                    alt={`${product?.name}`}
-                    className="rounded-lg h-64 w-auto"
-                    />
-                    <br />
-                    <div className="flex">
-                      <h1 className='text-3xl font-semibold pb-4'>Price</h1>
-                      <input type="text" className="border-2 h-10 w-28 ml-10" />
-                    </div>
-                  </>
-                ) : 
-                (
-                  <>
-                    <div className='h-56 w-56 p-8 rounded-lg border-2 bg-gray-100 border-gray-300 flex flex-col items-center justify-center relative overflow-hidden'>            
-                      <ImageOutlinedIcon
-                      sx={{ height: 42, width: 42 }}
-                      className='text-gray-500'
-                      />
-                      <p className='text-gray-500 mt-1'>Click to Upload</p>
-                        <input
-                        type='file'
-                        accept='image/*'
-                        title='Upload a file'
-                        className='absolute w-full h-full opacity-0 cursor-pointer'
-                        // onChange={handleFileInput}
-                      />
-                      </div>
-                      <br />
-                      <div className="flex">
-                        <h1 className='text-3xl font-semibold pb-4'>Price</h1>
-                        <input type="text" className="border-2 h-10 w-28 ml-10" />
-                      </div>
-                  </>
-                )}
+                <img
+                src={productImage}
+                alt={`${product?.name}`}
+                className="rounded-lg h-64 w-auto"
+                />
+                <br />
+                <div className="flex">
+                  <h1 className='text-3xl font-semibold pb-4'>Price</h1>
+                  <input type="text" className="border-2 h-10 w-28 ml-10" />
+                </div>
               </div>
               <div className='flex-1 ml-36'>
                 <h3 className='text-3xl font-semibold pb-4'>Name</h3>
@@ -92,9 +63,7 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
                 >
                 </div>
                 <div className='flex space-x-3'>
-                  <button className="border-solid border-2 border-black px-4 py-1 bg-black text-white">
-                    {edit ? "Update" : "Register"}
-                  </button>
+                  <button className="border-solid border-2 border-black px-4 py-1 bg-black text-white">Update</button>
                   <button className="border-solid border-2 border-black px-4 py-1">Cancel</button>
                 </div>
               </div>
