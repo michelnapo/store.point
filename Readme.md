@@ -20,8 +20,8 @@ Open a new terminal, go to the store.point folder and do the following (this com
 ```console
 $ npm i && npm run build
 $ cd ./hardhat
-$ npx hardhat compile
 $ npm i
+$ npx hardhat compile
 $ cp ./contracts/* ../contracts/
 $ cp ./contracts/* ../../pointnetwork/hardhat/contracts/
 $ cp ./contracts/* ../../point-contracts/contracts/
