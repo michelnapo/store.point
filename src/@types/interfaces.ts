@@ -63,3 +63,10 @@ export interface ToastNotification {
   color: "green-500" | "red-500";
   message: string;
 }
+
+export interface ProductInfo {
+  name: string;
+  price: number;
+  metadata: string;
+  sold: boolean;
+}

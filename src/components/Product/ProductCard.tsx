@@ -1,14 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { RoutesEnum } from "../../@types/enums";
+import { ProductInfo } from "../../@types/interfaces";
 
 export const ProductCard = (
   { product, productImage }: {
-    product: {
-      name: string,
-      price: number,
-      metadata: string,
-      sold: boolean
-    },
+    product: ProductInfo
     productImage: string
   }
 ) => {
