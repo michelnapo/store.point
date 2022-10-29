@@ -43,9 +43,7 @@ function ProductDetails() {
           </div>
           <div className='flex-1 ml-20'>
             <h2 className='text-3xl font-semibold pb-2'>{product?.name}</h2>
-            <div className='pb-2'>★★★★★</div>
             <div>{product?.metadata}</div>
-            <div>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</div>
           </div>
           <div className='flex-1 ml-20'>
             <div className="bg-white drop-shadow-md rounded-lg">
@@ -56,12 +54,6 @@ function ProductDetails() {
               </div>
             </div>
           </div>
-        </div>
-
-        <h3 className='text-3xl font-semibold pb-4 mt-5'>Comments</h3>
-        <div
-          className={`flex justify-end mb-3 text-sm text-opacity-40 m-1`}
-        >
         </div>
       </main>
     </PageLayout>
