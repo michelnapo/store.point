@@ -9,7 +9,7 @@ export const ProductCard = (
   }
 ) => {
   const navigate = useNavigate();
-
+  
   return (
     <div className="bg-white drop-shadow-md hover:drop-shadow-2xl rounded-lg cursor-pointer ease-linear duration-300">
       <img
