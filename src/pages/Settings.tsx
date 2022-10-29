@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { FetchStatus, StoreContract } from "../@types/enums";
 import { SettingsHeader, PrimaryButton, OutlinedButton, TextInput, MainTitle } from "../components";
-import { StorePictureUploader } from "../appComponents";
+import { StorePictureUploader } from "../components/Store/StorePictureUploader";
 import { checkOnlySpaceOnString } from "../utils";
 import PageLayout from "../layouts/PageLayout";
 

@@ -1,5 +1,5 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import { CreateProfile, CreateStore, Settings, Products } from "./pages";
+import { CreateProfile, CreateStore, Settings, Products, ProductDetails } from "./pages";
 import ToastNotification from "./components/ToastNotification";
 import { ProvideAppContext } from "./context/AppContext";
 import { RoutesEnum } from "./@types/enums";
@@ -12,6 +12,7 @@ const Main = () => (
     <Route path={RoutesEnum.create_store} element={<CreateStore />} />
     <Route path={RoutesEnum.settings} element={<Settings />} />
     <Route path={RoutesEnum.home} element={<Products />} />
+    <Route path={RoutesEnum.product_details} element={<ProductDetails />} />
   </Routes>
 );
 

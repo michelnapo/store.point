@@ -19,7 +19,7 @@ export enum StoreContract {
 
 export enum RoutesEnum {
   home = "/",
-  blog = "/blog",
+  product_details="/product",
   admin = "/admin",
   create = "/create",
   edit = "/edit",

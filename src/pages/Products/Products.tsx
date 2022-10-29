@@ -1,7 +1,7 @@
-import { MainTitle, SettingsHeader } from "../components";
-import { ProductList } from "../appComponents";
+import { MainTitle, SettingsHeader } from "../../components";
+import { ProductList } from "../../components/Product/ProductList";
 
-import PageLayout from "../layouts/PageLayout";
+import PageLayout from "../../layouts/PageLayout";
 
 const Products = () => (
   <PageLayout>

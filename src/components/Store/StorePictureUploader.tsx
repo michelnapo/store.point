@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, Fragment, SetStateAction } from "react";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { useAppContext } from "../../context/AppContext";
 
-const StorePictureUploader = ({ id, storePicture, setStorePicture } : { id: string, storePicture: Blob | null, setStorePicture: Dispatch<SetStateAction<Blob | null>>}) => {
+export const StorePictureUploader = ({ id, storePicture, setStorePicture } : { id: string, storePicture: Blob | null, setStorePicture: Dispatch<SetStateAction<Blob | null>>}) => {
   const { theme } = useAppContext();
 
   const handleFileInput = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -51,5 +51,3 @@ const StorePictureUploader = ({ id, storePicture, setStorePicture } : { id: stri
     </Fragment>
   );
 };
-
-export default StorePictureUploader;
