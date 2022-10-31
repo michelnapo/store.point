@@ -15,10 +15,9 @@ struct StoreInfo {
 }
 
 struct Product {
-    IERC721 nft;
+    address nftContract;
     uint tokenId;
     uint price;
-    address owner;
     bool sold;
 }
 
@@ -27,4 +26,3 @@ struct Theme{
     string primary;
     string text;
 }
-

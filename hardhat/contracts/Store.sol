@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 
 import "./StoreTypes.sol";
+import {NFT} from "./NFT.sol";
 
 // To be used when getting Store contract.
 interface IStore 
@@ -40,6 +41,7 @@ contract Store is
 
     Theme theme;
     StoreInfo store;
+    Product[] products;
     
     // Product Arrays and Mappings
     mapping(uint256 => Product) public tokenIdToProduct;
@@ -72,11 +74,19 @@ contract Store is
     function _authorizeUpgrade(address) internal override onlyOwner {}
 
     function addProductToStore(
-        string memory name,
-        uint price,
-        string memory metadata) external 
+        string calldata _tokenURI,
+        address _nftContract,
+        uint _price,
+        bool _sold
+    ) external 
     {
-        ///
+        uint tokenId = NFT(_nftContract).mint(_tokenURI);
+        products.push(Product(
+            _nftContract,
+            tokenId,
+            _price,
+            false
+        ));
     }
 
     function buyProduct(uint _tokenId) external payable {
@@ -86,7 +96,7 @@ contract Store is
 
     function getProducts() external view returns(Product[] memory) 
     {
-        ///
+        return products;
     }
 
     function getProductByTokenId(uint tokenId) external view returns(Product memory) {

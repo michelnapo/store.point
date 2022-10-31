@@ -3,7 +3,8 @@
   "target": "store.point",
   "keyvalue": {},
   "contracts": [
-    "Store"
+    "Store",
+    { "name": "NFT", "upgradable": false }
   ],
   "upgradable": true,
   "pointSDKVersion": "0.0.10",
