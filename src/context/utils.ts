@@ -1,6 +1,6 @@
 import NFTImageURL from "../../fake/nft.png";
 import { StoreContract } from "../@types/enums";
-import { NFTContract } from "../@types/interfaces";
+import { NFTContract, NFTInfo, Product } from "../@types/interfaces";
 
 const getWalletAddress = async () => {
   const { data: { address } } = await window.point.wallet.address();
@@ -26,6 +26,7 @@ const getDataFromStorage = async (storageHash: string) => {
 const createFakeNFTs = async (quantity: number) => {
   for (let i = 0; i < quantity; ++i) {
     const NFTImageFormData = new FormData();
+
     const NFTImageBlob = new Blob([NFTImageURL], { type: "image/png" });
     NFTImageFormData.append("files", NFTImageBlob);
 
@@ -46,12 +47,13 @@ const createFakeNFTs = async (quantity: number) => {
         },
         image: {
           type: "string",
-          description: NFTImageHash
+          description: `http://localhost:1984/${NFTImageHash}`
         }
       }
     };
 
-    const postResp = await window.point.storage.putString({ data: JSON.stringify(NFTMetadataJSON) });
+    const postResp = await window.
+      point.storage.putString({ data: JSON.stringify(NFTMetadataJSON) });
 
     const NFTMetadataHash = postResp.data;
 
@@ -59,30 +61,64 @@ const createFakeNFTs = async (quantity: number) => {
       contract: StoreContract.name,
       method: StoreContract.addProductToStore,
       params: [
-        `http://localhost:1984/${NFTMetadataHash}`,
+        NFTMetadataHash,
         "0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0",
-        100,
-        false
+        100
       ]
     });
   }
 };
 
+const getTokenURI = (
+  contractAddress: string,
+  tokenId: number
+) => window.point.contract.call({
+  contract: StoreContract.name,
+  method: StoreContract.getTokenURI,
+  params: [contractAddress, tokenId]
+});
+
 /* TEMPORARY FUNCTION */
-const getFakeNFTs = async () => {
+const getFakeNFTs = async (): Promise<NFTContract[]> => {
   const { data } = await window.point.contract.call({
     contract: StoreContract.name,
     method: StoreContract.getProducts
   });
 
-  const fakeNFTs: NFTContract[] = data.map((fakeNFT: any) => ({
-    address: fakeNFT[0],
-    tokenId: fakeNFT[1] as number,
-    price: fakeNFT[2],
-    sold: fakeNFT[3]
+  const fakeNFTs: NFTContract[] = await Promise.all(data.map(async (fakeNFT: any) => {
+    const resp = await getTokenURI("0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0", fakeNFT[1]);
+    const tokenURI = resp.data;
+
+    return {
+      address: fakeNFT[0],
+      tokenId: fakeNFT[1] as number,
+      tokenURI: tokenURI,
+      price: fakeNFT[2],
+      sold: fakeNFT[3]
+    };
   }));
 
   return fakeNFTs;
+};
+
+const getNFTInfo = async (nft: NFTContract): Promise<NFTInfo> => {
+  const metadata = await getDataFromStorage(nft.tokenURI);
+  return { data: { ...nft }, metadata: { ...metadata } };
+};
+
+const getProductFromNFT = (nftInfo: NFTInfo): Product => {
+  const { name, description, image } = nftInfo.metadata.properties;
+  const { address, price, sold, tokenId } = nftInfo.data;
+
+  return {
+    name: name.description,
+    description: description.description,
+    image: image.description,
+    price: price,
+    sold: sold,
+    address: address,
+    tokenId: tokenId
+  };
 };
 
 const getFakeNFTByTokenId = async (tokenId: number) => {
@@ -111,6 +147,9 @@ const utils = Object.freeze({
   getDataFromStorage,
   createFakeNFTs,
   getFakeNFTs,
-  getFakeNFTByTokenId
+  getFakeNFTByTokenId,
+  getNFTInfo,
+  getProductFromNFT
 });
+
 export default utils;
