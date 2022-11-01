@@ -46,7 +46,6 @@ contract Store is
     // Product Arrays and Mappings
     mapping(uint256 => Product) public tokenIdToProduct;
 
-
     // Events
     event NewStoreEvent(
         address storeAddress,
@@ -85,7 +84,7 @@ contract Store is
             _nftContract,
             tokenId,
             _price,
-            false
+            _sold
         ));
     }
 

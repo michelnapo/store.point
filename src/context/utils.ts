@@ -84,12 +84,22 @@ const getFakeNFTs = async () => {
   return fakeNFTs;
 };
 
+const addNftProduct = async (ownerAddress: string, data: string) => {
+  const { responseData } = 
+    await window.point.contract.send({
+        contract: StoreContract.name,
+        method: StoreContract.addProductToStore,
+        params: [ownerAddress, data]
+    });
+  }
+
 const utils = Object.freeze({
   getWalletAddress,
   getAddressFromIdentity,
   getIdentityFromAddress,
   getDataFromStorage,
   createFakeNFTs,
-  getFakeNFTs
+  getFakeNFTs,
+  addNftProduct
 });
 export default utils;

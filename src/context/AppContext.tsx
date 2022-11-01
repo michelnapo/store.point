@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
-import type { StoreConfigState } from "../@types/interfaces";
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   AppContentInterface,
-  ToastNotification
-  // UserInfoState
+  ToastNotification,
+  ProductInfoState,
+  StoreConfigState
 } from "../@types/interfaces";
-import { StoreContract, FetchStatus /* RoutesEnum */ } from "../@types/enums";
-// import { useNavigate } from "react-router-dom";
+import { StoreContract, FetchStatus, /* RoutesEnum */ 
+RoutesEnum} from "../@types/enums";
+import { useNavigate } from "react-router-dom";
 import utils from "./utils";
 import { Theme } from "../@types/types";
 
@@ -29,7 +30,7 @@ const AppContext = createContext({
   },
   theme: ["", "", ""],
   toast: { color: "green-500", message: "" },
-  // userInfo: {
+  // ProductInfo: {
   //   loading: true,
   //   data: { about: "", walletAddress: "", dataStorageHash: "", avatar: "" }
   // },
@@ -40,7 +41,7 @@ const AppContext = createContext({
 export const useAppContext = () => useContext(AppContext);
 
 export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [toast, setToast] = useState<ToastNotification>({
     color: "green-500",
@@ -48,12 +49,16 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  // const [userInfo, setUserInfo] = useState<UserInfoState>({
+  // const [productInfo, setStoreInfo] = useState<ProductInfoState>({
   //   loading: true,
   //   data: {
   //     walletAddress: "",
-  //     about: "",
-  //     avatar: "",
+  //     description: "",
+  //     name: "",
+  //     price: 0,
+  //     image: "",
+  //     sold: false,
+  //     metadata: "",
   //     dataStorageHash: ""
   //   }
   // });
@@ -66,7 +71,7 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
     loading: true,
     data: { name: "", description: "", logo: "" }
   });
-
+  
   // const Blogs = useBlogs({ setToast });
 
   useEffect(() => {
@@ -88,7 +93,7 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
 
       const ownerId = await utils.getIdentityFromAddress(owner);
       setOwnerIdentity(ownerId);
-
+      
       const visitor = await utils.getWalletAddress();
       setVisitorAddress(visitor);
 
@@ -98,11 +103,11 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
       const visitorIsOwner = visitor.toLowerCase() === owner.toLowerCase();
       setIsOwner(visitorIsOwner);
 
-      // const hash = await getUserInfo();
+      // const hash = await getProductInfo();
       // if (!hash && visitorIsOwner) {
       //   navigate(RoutesEnum.profile, {replace: true});
       // } else {
-      //   Blogs.getAllBlogs();
+        
       // }
 
       /* create fake NFTs - THIS CODE IS TO BE REMOVED ONCE THE NFT CREATION PAGE IS DONE */
@@ -154,7 +159,7 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
         visitorAddress,
         ownerAddress,
         ownerIdentity,
-        // getUserInfo,
+        // getProductInfo,
         // userInfo,
         visitorIdentity,
         getStoreConfig,

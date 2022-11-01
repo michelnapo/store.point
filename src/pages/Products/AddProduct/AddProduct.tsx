@@ -6,19 +6,97 @@ import { ProductInfo } from "../../../@types/interfaces";
 import productImage from "../../../../fake/nft.png";
 import products from "../../../../fake/products.json";
 import { useEffect, useState } from "react";
+import { useAppContext } from "../../../context/AppContext";
+import {UserInfo} from '../../../@types/interfaces';
+import { RoutesEnum, StoreContract } from "../../../@types/enums";
+import { useNavigate } from "react-router";
+import utils from "../../../context/utils";
 
 export const AddProduct = ({edit} : {edit? : boolean}) => {
   const [product, setProduct] = useState<ProductInfo>();
+  const [name, setName] = useState<string>('');
+  const [price, setPrice] = useState<number>();
+  const [description, setDescription] = useState<string>('');
+  const [productImage, setProductImage] = useState<Blob | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {ownerAddress, theme, setToast} = useAppContext();
+  const navigate = useNavigate();
 
-    function getProduct() {
-        const product = products[0] as ProductInfo;
-        setProduct(product);
-    }
+  function getProduct() {
+      const product = products[0] as ProductInfo;
+      setProduct(product);
+  }
 
     useEffect(() => {
         getProduct();
     }, [])
 
+    // const getInitialData = async () => {
+    //   if (edit) {
+    //       setLoading(true);
+    //       setAbout(userInfo.data.about);
+    //       if (userInfo.data.avatar) {
+    //           const blob = await window.point.storage.getFile({id: userInfo.data.avatar});
+    //           setAvatar(blob);
+    //       }
+
+    //       if (userInfo.data.headerImage) {
+    //           const blob = await window.point.storage.getFile({id: userInfo.data.headerImage});
+    //           setHeaderImage(blob);
+    //       }
+
+    //       setLoading(false);
+    //   }
+
+    // useEffect(() => {
+    //   getInitialData();
+    //   }, [edit, userInfo]);
+
+    //   const handleFileButtonClick = ()  => {
+    //       hiddenFileInput?.current?.click();
+    //     };
+
+    //   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    //       setAvatar(e.target.files ? e.target.files[0] : null);
+    //   };
+
+    const handleFinish = async () => {
+      setLoading(true);
+      try 
+      {
+          let productNftImage = '';
+          if (productImage) {
+              const productImageFormData = new FormData();
+              productImageFormData.append('files', productImage);
+              const {data} = await window.point.storage.postFile(productImageFormData);
+              productNftImage = data;
+          }
+          
+          const form = JSON.stringify({
+              image: productNftImage,
+              name,
+              description
+          } as ProductInfo);
+          const file = new File([form], 'product.json', {type: 'application/json'});
+
+          const formData = new FormData();
+          formData.append('files', file);
+          // Upload the File to arweave
+          const res = await window.point.storage.postFile(formData);
+          setLoading(false);
+          utils.addNftProduct(ownerAddress, res.data);
+          setToast({color: 'green-500', message: 'Product saved successfully'});
+          navigate(RoutesEnum.home);
+      } 
+      catch (error) 
+      {
+          setLoading(false);
+          setToast({
+              color: 'red-500',
+              message: 'Failed to save the product. Please try again'
+          });
+      }
+  };
 
     return (
       <>
