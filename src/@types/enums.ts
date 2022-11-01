@@ -15,6 +15,7 @@ export enum StoreContract {
   setTheme = "setTheme",
   getStoreConfig = "getStoreConfig",
   setStoreConfig = "setStoreConfig",
+  getTokenURI = "getTokenURI"
 }
 
 export enum RoutesEnum {

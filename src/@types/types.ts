@@ -19,4 +19,14 @@ export type Comment = [
   identity?: string
 ];
 
+export type NFTMetadata = {
+  properties: {
+    description: { type: string, description: string },
+    image: { type: string, description: string },
+    name: { type: string, description: string}
+  },
+  title: string,
+  type: string
+};
+
 export type Theme = [background: string, primary: string, text: string];

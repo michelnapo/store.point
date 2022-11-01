@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, ReactEventHandler, SetStateAction } from "react";
 import { FetchStatus } from "./enums";
-import { Theme } from "./types";
+import { NFTMetadata, Theme } from "./types";
 
 export interface ButtonProps {
   children: string;
@@ -71,9 +71,25 @@ export interface ProductInfo {
   sold: boolean;
 }
 
+export interface Product {
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  sold: boolean;
+  tokenId: number;
+  address: string;
+}
+
+export interface NFTInfo {
+  data: NFTContract;
+  metadata: NFTMetadata;
+}
+
 export interface NFTContract {
   address: string;
   tokenId: number;
+  tokenURI: string;
   price: number;
   sold: boolean;
 }
