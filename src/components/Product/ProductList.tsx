@@ -1,16 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PrimaryButton } from "..";
 import { ProductCard } from "./ProductCard";
 import utils from "../../context/utils";
 import products from "../../../fake/products.json";
 import productImage from "../../../fake/nft.png";
+import { NFTContract } from "../../@types/interfaces";
 
 export const ProductList = () => {
-  // const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<NFTContract[]>();
 
   useEffect(() => {
     (async () => {
-      const fakeNFTs = await utils.getFakeNFTs(); 
+      const fakeNFTs = await utils.getFakeNFTs();
+      setProducts(fakeNFTs);
 
       console.log(fakeNFTs);
       // const fakeProducts = fakeNFTs.map(async fakeNFT => {
@@ -21,12 +23,11 @@ export const ProductList = () => {
       //   console.log(metadata);
       // });
     })();
-    
   }, []);
 
   return (
     <ul className="grid grid-cols-4 gap-4 flex-row flex-wrap">
-      {products.map((product, index) => (
+      {products?.map((product, index) => (
         <li key={index}>
           <div className="flex flex-col gap-2 mb-2">
             <ProductCard product={product} productImage={productImage} />
@@ -34,7 +35,7 @@ export const ProductList = () => {
           </div>
         </li>
       ))}
-    </ul>  
+    </ul>
   );
 };
 

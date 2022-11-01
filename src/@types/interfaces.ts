@@ -70,3 +70,15 @@ export interface ProductInfo {
   metadata: string;
   sold: boolean;
 }
+
+export interface NFTContract {
+  address: string;
+  tokenId: number;
+  price: number;
+  sold: boolean;
+}
+
+export interface ProductDetailsParams {
+  address: string,
+  tokenId: number,
+}

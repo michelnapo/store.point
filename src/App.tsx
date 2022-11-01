@@ -15,8 +15,8 @@ const Main = () => (
     <Route path={RoutesEnum.settings} element={<Settings />} />
     <Route path={RoutesEnum.home} element={<Products />} />
     <Route path={RoutesEnum.product_details} element={<ProductDetails />} />
-    <Route path={RoutesEnum.add_product} element={<AddProduct/>} />
-    <Route path={RoutesEnum.edit_product} element={<AddProduct edit/>} />
+    <Route path={RoutesEnum.add_product} element={<AddProduct />} />
+    <Route path={RoutesEnum.edit_product} element={<AddProduct edit />} />
   </Routes>
 );
 
