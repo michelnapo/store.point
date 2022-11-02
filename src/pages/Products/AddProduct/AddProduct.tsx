@@ -2,8 +2,8 @@ import PageLayout from "../../../layouts/PageLayout";
 import { MainTitle, SettingsHeader } from "../../../components";
 import { OutlinedButton, PrimaryButton } from "../../../components/Button";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { ProductInfo } from "../../../@types/interfaces";
-import productImage from "../../../../fake/nft.png";
+import { Product, ProductInfo } from "../../../@types/interfaces";
+import productImageFake from "../../../../fake/nft.png";
 import products from "../../../../fake/products.json";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../context/AppContext";
@@ -12,42 +12,55 @@ import { RoutesEnum, StoreContract } from "../../../@types/enums";
 import { useNavigate } from "react-router";
 import utils from "../../../context/utils";
 
-export const AddProduct = ({edit} : {edit? : boolean}) => {
-  const [product, setProduct] = useState<ProductInfo>();
+export const AddProduct = ({edit, tokenId} : {edit? : boolean, tokenId? : number}) => {
+  const [product, setProduct] = useState<Product>(
+    {
+      name: "",
+      description: "",
+      image: "",
+      price: 0,
+      sold: false,
+      tokenId: 0,
+      address: ""
+    }
+  );
   const [name, setName] = useState<string>('');
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number>(0);
   const [description, setDescription] = useState<string>('');
   const [productImage, setProductImage] = useState<Blob | null>(null);
+  // const [productInfo, setProductInfo] = useState<Product>(
+  //   {
+  //     name: "",
+  //     description: "",
+  //     image: "",
+  //     price: 0,
+  //     sold: false,
+  //     tokenId: 0,
+  //     address: ""
+  //   });
   const [loading, setLoading] = useState<boolean>(false);
   const {ownerAddress, theme, setToast} = useAppContext();
   const navigate = useNavigate();
 
-  function getProduct() {
-      const product = products[0] as ProductInfo;
-      setProduct(product);
-  }
-
     useEffect(() => {
-        getProduct();
+        getInitialData();
     }, [])
 
-    // const getInitialData = async () => {
-    //   if (edit) {
-    //       setLoading(true);
-    //       setAbout(userInfo.data.about);
-    //       if (userInfo.data.avatar) {
-    //           const blob = await window.point.storage.getFile({id: userInfo.data.avatar});
-    //           setAvatar(blob);
-    //       }
+    const getInitialData = async () => {
+        if (edit) {
+          setLoading(true);
+          setDescription(product.description);
+          if (product.image) {
+              const blob = await window.point.storage.getFile({id: product.image});
+              setProductImage(blob);
+          }
 
-    //       if (userInfo.data.headerImage) {
-    //           const blob = await window.point.storage.getFile({id: userInfo.data.headerImage});
-    //           setHeaderImage(blob);
-    //       }
+        
 
-    //       setLoading(false);
-    //   }
-
+        setLoading(false);
+      }
+    }
+    
     // useEffect(() => {
     //   getInitialData();
     //   }, [edit, userInfo]);
@@ -78,13 +91,13 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
               description
           } as ProductInfo);
           const file = new File([form], 'product.json', {type: 'application/json'});
-
+          
           const formData = new FormData();
           formData.append('files', file);
           // Upload the File to arweave
           const res = await window.point.storage.postFile(formData);
           setLoading(false);
-          utils.addNftProduct(ownerAddress, res.data);
+          utils.addNftProduct(ownerAddress, res.data, price);
           setToast({color: 'green-500', message: 'Product saved successfully'});
           navigate(RoutesEnum.home);
       } 
@@ -109,11 +122,11 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
             <div className="flex flex-row">
               <div>
               <h1 className='text-3xl font-semibold pb-4'>Picture</h1>
-                {edit ? 
+                {edit ?
                 (
                   <>
                     <img
-                    src={productImage}
+                    src={productImageFake}
                     alt={`${product?.name}`}
                     className="rounded-lg h-64 w-auto"
                     />
@@ -143,7 +156,7 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
                       <br />
                       <div className="flex">
                         <h1 className='text-3xl font-semibold pb-4'>Price</h1>
-                        <input type="text" className="border-2 h-10 w-28 ml-10" />
+                        <input onChange={()=> setPrice} type="text" className="border-2 h-10 w-28 ml-10" />
                       </div>
                   </>
                 )}
@@ -170,8 +183,11 @@ export const AddProduct = ({edit} : {edit? : boolean}) => {
                 >
                 </div>
                 <div className='flex space-x-3'>
-                  <button className="border-solid border-2 border-black px-4 py-1 bg-black text-white">
-                    {edit ? "Update" : "Register"}
+                  <button
+                    disabled={loading} 
+                    onClick={handleFinish}
+                    className="border-solid border-2 border-black px-4 py-1 bg-black text-white">
+                      {edit ? "Update" : "Register"}
                   </button>
                   <button className="border-solid border-2 border-black px-4 py-1">Cancel</button>
                 </div>

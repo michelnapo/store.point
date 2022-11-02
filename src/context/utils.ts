@@ -140,12 +140,12 @@ const getFakeNFTByTokenId = async (tokenId: number) => {
   return fakeNFTs[0];
 };
 
-const addNftProduct = async (ownerAddress: string, data: string) => {
+const addNftProduct = async (ownerAddress: string, data: any, price: number) => {
   const { responseData } = 
     await window.point.contract.send({
         contract: StoreContract.name,
         method: StoreContract.addProductToStore,
-        params: [ownerAddress, data]
+        params: [ownerAddress, data, price]
     });
   }
 

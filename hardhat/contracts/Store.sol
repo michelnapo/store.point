@@ -83,7 +83,7 @@ contract Store is
             _nftContract,
             tokenId,
             _price,
-            _sold
+            false
         ));
     }
 

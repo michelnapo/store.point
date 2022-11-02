@@ -68,9 +68,6 @@ export interface ProductInfo {
   image: string;
   description: string;
   name: string;
-  price: number;
-  metadata: string;
-  sold: boolean;
 }
 
 export interface Product {
