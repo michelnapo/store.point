@@ -15,11 +15,12 @@ export enum StoreContract {
   setTheme = "setTheme",
   getStoreConfig = "getStoreConfig",
   setStoreConfig = "setStoreConfig",
+  getTokenURI = "getTokenURI"
 }
 
 export enum RoutesEnum {
   home = "/",
-  product_details="/product",
+  product_details = "/product",
   admin = "/admin",
   create = "/create",
   edit = "/edit",
@@ -27,7 +28,7 @@ export enum RoutesEnum {
   edit_profile = "/edit_profile",
   customize = "/customize",
   create_store = "/create_store",
-  add_product= "/add_product",
-  edit_product="/edit_product",
+  add_product = "/add_product",
+  edit_product = "/edit_product",
   settings = "/settings"
 }

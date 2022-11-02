@@ -1,40 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PrimaryButton } from "..";
 import { ProductCard } from "./ProductCard";
 import utils from "../../context/utils";
-import products from "../../../fake/products.json";
-import productImage from "../../../fake/nft.png";
+import { Product } from "../../@types/interfaces";
 
 export const ProductList = () => {
-  // const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    (async () => {
-      const fakeNFTs = await utils.getFakeNFTs(); 
 
-      console.log(fakeNFTs);
-      // const fakeProducts = fakeNFTs.map(async fakeNFT => {
-      //   const metadata = await window.point.storage.getString({
-      //     id: fakeNFT.URI,
-      //     encoding: "utf-8"
-      //   }); 
-      //   console.log(metadata);
-      // });
+    (async () => {
+      const NFTs = await utils.getFakeNFTs();
+      const NFTsInfo = await Promise.all(NFTs.map(async (nft) => utils.getNFTInfo(nft)));
+      const _products = NFTsInfo.map(NFTInfo => utils.getProductFromNFT(NFTInfo));
+
+      setProducts(_products);
+      if (products.length === 0) {
+        utils.createFakeNFTs(4);
+      }
     })();
-    
   }, []);
 
   return (
     <ul className="grid grid-cols-4 gap-4 flex-row flex-wrap">
-      {products.map((product, index) => (
+      {products?.map((product, index) => (
         <li key={index}>
           <div className="flex flex-col gap-2 mb-2">
-            <ProductCard product={product} productImage={productImage} />
+            <ProductCard product={product} />
             <PrimaryButton>Add to cart</PrimaryButton>
           </div>
         </li>
       ))}
-    </ul>  
+    </ul>
   );
 };
 

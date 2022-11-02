@@ -3,22 +3,23 @@ import MainTitle from '../../components/MainTitle'
 import SettingsHeader from '../../components/SettingsHeader'
 import PageLayout from '../../layouts/PageLayout'
 import { OutlinedButton, PrimaryButton } from '../../components';
-import products from "../../../fake/products.json";
 import productImage from "../../../fake/nft.png";
-import { ProductInfo } from '../../@types/interfaces';
+import { NFTContract, ProductDetailsParams } from '../../@types/interfaces';
+import { useLocation, } from 'react-router-dom';
+import utils from '../../context/utils';
 
 function ProductDetails() {
 
-  const [product, setProduct] = useState<ProductInfo>();
-
-  function getProduct() {
-    const product = products[0] as ProductInfo;
-    setProduct(product);
-  }
+  const [product, setProduct] = useState<NFTContract>();
+  const location = useLocation();
 
   useEffect(() => {
-    getProduct();
-  }, [])
+    (async () => {
+      const state = location.state as ProductDetailsParams
+      const fakeNFT = await utils.getFakeNFTByTokenId(state.tokenId);
+      setProduct(fakeNFT);
+    })();
+  }, []);
 
   return (
     <PageLayout>

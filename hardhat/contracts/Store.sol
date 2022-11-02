@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 
 import "./StoreTypes.sol";
 import {NFT} from "./NFT.sol";
@@ -75,8 +75,7 @@ contract Store is
     function addProductToStore(
         string calldata _tokenURI,
         address _nftContract,
-        uint _price,
-        bool _sold
+        uint _price
     ) external 
     {
         uint tokenId = NFT(_nftContract).mint(_tokenURI);
@@ -86,6 +85,10 @@ contract Store is
             _price,
             _sold
         ));
+    }
+
+    function getTokenURI(address _nftContract, uint _tokenId) public view returns (string memory) {
+        return IERC721Metadata(_nftContract).tokenURI(_tokenId);
     }
 
     function buyProduct(uint _tokenId) external payable {

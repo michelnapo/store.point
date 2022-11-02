@@ -110,8 +110,6 @@ export const ProvideAppContext = ({ children }: { children: ReactNode }) => {
         
       // }
 
-      /* create fake NFTs - THIS CODE IS TO BE REMOVED ONCE THE NFT CREATION PAGE IS DONE */
-      utils.createFakeNFTs(8);
       setLoading(false);
     })();
   }, []);
