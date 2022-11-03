@@ -35,6 +35,7 @@ export const ProductCard = (
             { state: { address: address, tokenId: tokenId } }
           )
         )}
+        style={{ height: "274px", width: "274px" }}
       />
       <div className="flex flex-col place-content-around h-24 pl-4 font-bold">
         <span>{name}</span>

@@ -110,7 +110,7 @@ export const AddProduct = ({ edit, tokenId } : {edit? : boolean, tokenId? : numb
         await utils.createNFT(
           name,
           description,
-          URL.createObjectURL(productImage),
+          productImage,
           price
         );
       }

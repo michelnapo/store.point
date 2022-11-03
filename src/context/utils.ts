@@ -95,12 +95,10 @@ const getNFTByTokenId = async (tokenId: number) => {
 const createNFT = async (
   name: string,
   description: string,
-  NFTImageURL: string,
+  NFTImageBlob: Blob,
   price: number
 ) => {
   const NFTImageFormData = new FormData();
-
-  const NFTImageBlob = new Blob([NFTImageURL], { type: "image/png" });
   NFTImageFormData.append("files", NFTImageBlob);
 
   const { data } = await window.point.storage.postFile(NFTImageFormData);
@@ -108,7 +106,7 @@ const createNFT = async (
 
   const NFTMetadataJSON = {
     description: description,
-    image: `https://store.point/_storage/${NFTImageHash}`,
+    image: NFTImageHash,
     name: name
   };
 
