@@ -9,13 +9,14 @@ export enum StoreContract {
   owner = "owner",
   addProductToStore = "addProductToStore",
   buyProduct = "buyProduct",
-  getProducts = "getProducts",
+  getTokenIds = "getTokenIds",
   getProductByTokenId = "getProductByTokenId",
   getTheme = "getTheme",
   setTheme = "setTheme",
   getStoreConfig = "getStoreConfig",
   setStoreConfig = "setStoreConfig",
-  getTokenURI = "getTokenURI"
+  getTokenURI = "getTokenURI",
+  updateProductPrice = "updateProductPrice"
 }
 
 export enum RoutesEnum {

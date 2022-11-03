@@ -19,7 +19,7 @@ export type Comment = [
   identity?: string
 ];
 
-export type NFTMetadata = {
+export type Nft = {
   description: string,
   image: string,
   name: string

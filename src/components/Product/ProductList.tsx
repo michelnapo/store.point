@@ -1,31 +1,38 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { PrimaryButton } from "..";
 import { ProductCard } from "./ProductCard";
 import utils from "../../context/utils";
-import { Product } from "../../@types/interfaces";
+import { StoreProduct } from "../../@types/interfaces";
 
 export const ProductList = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [storeProducts, setStoreProducts] = useState<StoreProduct[]>([]);
 
   useEffect(() => {
 
     (async () => {
-      const NFTs = await utils.getNFTs();
-      const NFTsInfo = await Promise.all(NFTs.map(async (nft) => utils.getNFTInfo(nft)));
-      const _products = NFTsInfo.map(NFTInfo => utils.getProductFromNFT(NFTInfo));
+      const tokenIds = await utils.getTokenIds();
+      const tokenURIs = await utils.getTokensURIs(tokenIds);
 
-      setProducts(_products);
+      const nfts = await utils.getNFTsFromStorage(tokenURIs);
+      const products = await utils.getProductsByTokenIds(tokenIds);
+
+      const _storeProducts = utils.getStoreProducts(products, nfts);
+      setStoreProducts(_storeProducts);
     })();
   }, []);
 
   return (
     <ul className="grid grid-cols-4 gap-4 flex-row flex-wrap">
-      {products?.map((product, index) => (
+      {storeProducts?.map((storeProduct, index) => (
         <li key={index}>
-          <div className="flex flex-col gap-2 mb-2">
-            <ProductCard product={product} />
-            <PrimaryButton>Add to cart</PrimaryButton>
-          </div>
+          <Link
+            to={`/${storeProduct.tokenId}`}
+            className="flex flex-col gap-2 mb-2"
+          >
+            <ProductCard storeProduct={storeProduct} />
+            <PrimaryButton>Edit</PrimaryButton>
+          </Link>
         </li>
       ))}
     </ul>

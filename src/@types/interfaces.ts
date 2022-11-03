@@ -71,13 +71,26 @@ export interface ProductInfo {
 }
 
 export interface Product {
+  nftContractAddress: string;
+  tokenId: number;
+  price: number;
+  sold: boolean;
+}
+
+export interface Nft {
+  name: string;
+  description: string;
+  image: string;
+}
+
+export interface StoreProduct {
   name: string;
   description: string;
   image: string;
   price: number;
   sold: boolean;
+  nftContractAddress: string;
   tokenId: number;
-  address: string;
 }
 
 export interface NFTInfo {

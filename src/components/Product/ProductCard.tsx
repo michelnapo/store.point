@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RoutesEnum } from "../../@types/enums";
-import { Product } from "../../@types/interfaces";
+import { StoreProduct } from "../../@types/interfaces";
 import { getImageFromArweave } from "../../utils";
 
 export const ProductCard = (
-  { product }: { product: Product }
+  { storeProduct }: { storeProduct: StoreProduct }
 ) => {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const navigate = useNavigate();
-  const { name, image, price, tokenId, address } = product;
+  const { name, image, price, tokenId, nftContractAddress } = storeProduct;
 
   useEffect(() => {
     (async () => {
@@ -27,12 +27,12 @@ export const ProductCard = (
     <div className="bg-white drop-shadow-md hover:drop-shadow-2xl rounded-lg cursor-pointer ease-linear duration-300">
       <img
         src={imageURL}
-        alt={`product-${product.name}`}
+        alt={`product-${storeProduct.name}`}
         className="rounded-lg"
         onClick={() => (
           navigate(
             RoutesEnum.product_details,
-            { state: { address: address, tokenId: tokenId } }
+            { state: { address: nftContractAddress, tokenId: tokenId } }
           )
         )}
         style={{ height: "274px", width: "274px" }}

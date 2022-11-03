@@ -41,7 +41,7 @@ contract Store is
 
     Theme theme;
     StoreInfo store;
-    Product[] products;
+    uint[] tokenIds;
     
     // Product Arrays and Mappings
     mapping(uint256 => Product) public tokenIdToProduct;
@@ -79,12 +79,13 @@ contract Store is
     ) external 
     {
         uint tokenId = NFT(_nftContract).mint(_tokenURI);
-        products.push(Product(
-            _nftContract,
-            tokenId,
-            _price,
-            false
-        ));
+        tokenIds.push(tokenId);
+        tokenIdToProduct[tokenId] = Product(_nftContract, tokenId, _price, false);
+    }
+
+    function updateProductPrice(uint _tokenId, uint price) external
+    {
+        tokenIdToProduct[_tokenId].price = price;
     }
 
     function getTokenURI(address _nftContract, uint _tokenId) public view returns (string memory) {
@@ -96,9 +97,9 @@ contract Store is
         /// emit ProductSoldEvent(_tokenId, ownerAddress, msg.sender, block.timestamp);
     }
 
-    function getProducts() external view returns(Product[] memory) 
+    function getTokenIds() external view returns(uint[] memory) 
     {
-        return products;
+        return tokenIds;
     }
 
     function getProductByTokenId(uint tokenId) external view returns(Product memory) {

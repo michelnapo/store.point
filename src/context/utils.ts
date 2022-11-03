@@ -1,5 +1,5 @@
 import { StoreContract } from "../@types/enums";
-import { NFTContract, NFTInfo, Product } from "../@types/interfaces";
+import { NFTContract, Product, StoreProduct, Nft } from "../@types/interfaces";
 
 const getWalletAddress = async () => {
   const { data: { address } } = await window.point.wallet.address();
@@ -21,46 +21,51 @@ const getDataFromStorage = async (storageHash: string) => {
   return JSON.parse(data);
 };
 
-const getTokenURI = (
+const getTokenURI = async (
   contractAddress: string,
   tokenId: number
-) => window.point.contract.call({
-  contract: StoreContract.name,
-  method: StoreContract.getTokenURI,
-  params: [contractAddress, tokenId]
-});
-
-/* TEMPORARY FUNCTION */
-const getNFTs = async (): Promise<NFTContract[]> => {
+): Promise<string> => {
   const { data } = await window.point.contract.call({
     contract: StoreContract.name,
-    method: StoreContract.getProducts
+    method: StoreContract.getTokenURI,
+    params: [contractAddress, tokenId]
   });
 
-  const NFTs: NFTContract[] = await Promise.all(data.map(async (nft: any) => {
-    const resp = await getTokenURI("0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0", nft[1]);
-    const tokenURI = resp.data;
+  return data;
+};
 
-    return {
-      address: nft[0],
-      tokenId: nft[1] as number,
-      tokenURI: tokenURI,
-      price: nft[2],
-      sold: nft[3]
-    };
+const getTokensURIs = async (tokenIds: number[]): Promise<string[]> => {
+  const tokensURIs: string[] = await Promise.all(tokenIds.map(async (tokenId: number) => {
+    const tokenURI = await getTokenURI("0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0", tokenId);
+
+    return tokenURI;
   }));
 
-  return NFTs;
+  return tokensURIs;
 };
 
-const getNFTInfo = async (nft: NFTContract): Promise<NFTInfo> => {
-  const metadata = await getDataFromStorage(nft.tokenURI);
-  return { data: { ...nft }, metadata: { ...metadata } };
+const getTokenIds = async (): Promise<number[]> => {
+  const { data } = await window.point.contract.call({
+    contract: StoreContract.name,
+    method: StoreContract.getTokenIds
+  });
+
+  return data;
 };
 
-const getProductFromNFT = (nftInfo: NFTInfo): Product => {
-  const { name, description, image } = nftInfo.metadata;
-  const { address, price, sold, tokenId } = nftInfo.data;
+const getNFTsFromStorage = async (uris: string[]): Promise<any> => {
+  const nfts = await Promise.all(uris.map(async (uri: string) => {
+    const nft = await getDataFromStorage(uri);
+
+    return nft;
+  }));
+
+  return nfts;
+};
+
+const getStoreProduct = (product: Product, nft: Nft): StoreProduct => {
+  const { name, description, image } = nft;
+  const { nftContractAddress, price, sold, tokenId } = product;
 
   return {
     name: name,
@@ -68,9 +73,43 @@ const getProductFromNFT = (nftInfo: NFTInfo): Product => {
     image: image,
     price: price,
     sold: sold,
-    address: address,
+    nftContractAddress: nftContractAddress,
     tokenId: tokenId
   };
+};
+
+const getStoreProducts = (products: Product[], nfts: Nft[]): StoreProduct[] => {
+  const storeProducts: StoreProduct[] = [];
+  for (let i = 0; i < products.length; ++i) {
+    storeProducts.push(getStoreProduct(products[i], nfts[i]));
+  }
+
+  return storeProducts;
+};
+
+const getProductByTokenId = async (tokenId: number): Promise<Product> => {
+  const { data } = await window.point.contract.call({
+    contract: StoreContract.name,
+    method: StoreContract.getProductByTokenId,
+    params: [tokenId]
+  });
+
+  return {
+    nftContractAddress: data[0],
+    tokenId: data[1],
+    price: data[2],
+    sold: data[3]
+  };
+};
+
+const getProductsByTokenIds = async (tokenIds: number[]): Promise<Product[]> => {
+  const products = await Promise.all(tokenIds.map(async (tokenId: number) => {
+    const product = await getProductByTokenId(tokenId);
+
+    return product;
+  }));
+
+  return products;
 };
 
 const getNFTByTokenId = async (tokenId: number) => {
@@ -140,11 +179,16 @@ const utils = Object.freeze({
   getAddressFromIdentity,
   getIdentityFromAddress,
   getDataFromStorage,
-  getNFTs,
   addNftProduct,
   getNFTByTokenId,
-  getNFTInfo,
-  getProductFromNFT
+  getTokenIds,
+  getNFTsFromStorage,
+  getStoreProduct,
+  getProductByTokenId,
+  getProductsByTokenIds,
+  getStoreProducts,
+  getTokenURI,
+  getTokensURIs
 });
 
 export default utils;
