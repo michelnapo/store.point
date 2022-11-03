@@ -37,16 +37,16 @@ const getNFTs = async (): Promise<NFTContract[]> => {
     method: StoreContract.getProducts
   });
 
-  const NFTs: NFTContract[] = await Promise.all(data.map(async (fakeNFT: any) => {
-    const resp = await getTokenURI("0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0", fakeNFT[1]);
+  const NFTs: NFTContract[] = await Promise.all(data.map(async (nft: any) => {
+    const resp = await getTokenURI("0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0", nft[1]);
     const tokenURI = resp.data;
 
     return {
-      address: fakeNFT[0],
-      tokenId: fakeNFT[1] as number,
+      address: nft[0],
+      tokenId: nft[1] as number,
       tokenURI: tokenURI,
-      price: fakeNFT[2],
-      sold: fakeNFT[3]
+      price: nft[2],
+      sold: nft[3]
     };
   }));
 
@@ -82,14 +82,63 @@ const getFakeNFTByTokenId = async (tokenId: number) => {
     ]
   });
 
-  const NFTs: NFTContract[] = data.map((fakeNFT: any) => ({
-    address: fakeNFT[0],
-    tokenId: fakeNFT[1] as number,
-    price: fakeNFT[2],
-    sold: fakeNFT[3]
+  const NFTs: NFTContract[] = data.map((nft: any) => ({
+    address: nft[0],
+    tokenId: nft[1] as number,
+    price: nft[2],
+    sold: nft[3]
   }));
 
   return NFTs[0];
+};
+
+const createNFT = async (
+  name: string,
+  description: string,
+  NFTImageURL: string,
+  price: number
+) => {
+  const NFTImageFormData = new FormData();
+
+  const NFTImageBlob = new Blob([NFTImageURL], { type: "image/png" });
+  NFTImageFormData.append("files", NFTImageBlob);
+
+  const { data } = await window.point.storage.postFile(NFTImageFormData);
+  const NFTImageHash = data;
+
+  const NFTMetadataJSON = {
+    title: "store.point NFT metadata",
+    type: "object",
+    properties: {
+      name: {
+        type: "string",
+        description: name
+      },
+      description: {
+        type: "string",
+        description: description
+      },
+      image: {
+        type: "string",
+        description: `http://localhost:1984/_storage/${NFTImageHash}`
+      }
+    }
+  };
+
+  const postResp = await window.
+    point.storage.putString({ data: JSON.stringify(NFTMetadataJSON) });
+
+  const NFTMetadataHash = postResp.data;
+
+  await window.point.contract.send({
+    contract: StoreContract.name,
+    method: StoreContract.addProductToStore,
+    params: [
+      NFTMetadataHash,
+      "0x95Ce45A438210eEC3ab9864977ca9C49148Ae1F0",
+      price
+    ]
+  });
 };
 
 const addNftProduct = async (data: any, ownerAddress: string, price: number) => {
@@ -101,6 +150,7 @@ const addNftProduct = async (data: any, ownerAddress: string, price: number) => 
 };
 
 const utils = Object.freeze({
+  createNFT,
   getWalletAddress,
   getAddressFromIdentity,
   getIdentityFromAddress,
