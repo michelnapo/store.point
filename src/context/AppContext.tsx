@@ -6,8 +6,7 @@ import {
   ProductInfoState,
   StoreConfigState
 } from "../@types/interfaces";
-import { StoreContract, FetchStatus, /* RoutesEnum */ 
-RoutesEnum} from "../@types/enums";
+import { StoreContract, FetchStatus, RoutesEnum } from "../@types/enums";
 import { useNavigate } from "react-router-dom";
 import utils from "./utils";
 import { Theme } from "../@types/types";

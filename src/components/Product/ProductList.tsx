@@ -10,14 +10,11 @@ export const ProductList = () => {
   useEffect(() => {
 
     (async () => {
-      const NFTs = await utils.getFakeNFTs();
+      const NFTs = await utils.getNFTs();
       const NFTsInfo = await Promise.all(NFTs.map(async (nft) => utils.getNFTInfo(nft)));
       const _products = NFTsInfo.map(NFTInfo => utils.getProductFromNFT(NFTInfo));
 
       setProducts(_products);
-      if (products.length === 0) {
-        utils.createFakeNFTs(4);
-      }
     })();
   }, []);
 
