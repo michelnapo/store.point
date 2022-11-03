@@ -59,13 +59,13 @@ const getNFTInfo = async (nft: NFTContract): Promise<NFTInfo> => {
 };
 
 const getProductFromNFT = (nftInfo: NFTInfo): Product => {
-  const { name, description, image } = nftInfo.metadata.properties;
+  const { name, description, image } = nftInfo.metadata;
   const { address, price, sold, tokenId } = nftInfo.data;
 
   return {
-    name: name.description,
-    description: description.description,
-    image: image.description,
+    name: name,
+    description: description,
+    image: image,
     price: price,
     sold: sold,
     address: address,
@@ -73,7 +73,7 @@ const getProductFromNFT = (nftInfo: NFTInfo): Product => {
   };
 };
 
-const getFakeNFTByTokenId = async (tokenId: number) => {
+const getNFTByTokenId = async (tokenId: number) => {
   const { data } = await window.point.contract.call({
     contract: StoreContract.name,
     method: StoreContract.getProductByTokenId,
@@ -107,22 +107,9 @@ const createNFT = async (
   const NFTImageHash = data;
 
   const NFTMetadataJSON = {
-    title: "store.point NFT metadata",
-    type: "object",
-    properties: {
-      name: {
-        type: "string",
-        description: name
-      },
-      description: {
-        type: "string",
-        description: description
-      },
-      image: {
-        type: "string",
-        description: `http://localhost:1984/_storage/${NFTImageHash}`
-      }
-    }
+    description: description,
+    image: `https://store.point/_storage/${NFTImageHash}`,
+    name: name
   };
 
   const postResp = await window.
@@ -157,7 +144,7 @@ const utils = Object.freeze({
   getDataFromStorage,
   getNFTs,
   addNftProduct,
-  getFakeNFTByTokenId,
+  getNFTByTokenId,
   getNFTInfo,
   getProductFromNFT
 });

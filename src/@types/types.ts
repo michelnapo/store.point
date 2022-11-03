@@ -20,13 +20,9 @@ export type Comment = [
 ];
 
 export type NFTMetadata = {
-  properties: {
-    description: { type: string, description: string },
-    image: { type: string, description: string },
-    name: { type: string, description: string}
-  },
-  title: string,
-  type: string
+  description: string,
+  image: string,
+  name: string
 };
 
 export type Theme = [background: string, primary: string, text: string];

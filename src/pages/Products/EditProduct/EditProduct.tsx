@@ -2,9 +2,7 @@ import PageLayout from "../../../layouts/PageLayout";
 import { MainTitle, SettingsHeader } from "../../../components";
 import { OutlinedButton, PrimaryButton } from "../../../components/Button";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import productImage from "../../../../fake/nft.png";
 import { ProductInfo } from "../../../@types/interfaces";
-import products from "../../../../fake/products.json";
 import { useEffect, useState } from "react";
 
 export const EditProduct = () => {

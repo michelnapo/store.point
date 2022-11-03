@@ -16,8 +16,8 @@ function ProductDetails() {
   useEffect(() => {
     (async () => {
       const state = location.state as ProductDetailsParams
-      const fakeNFT = await utils.getFakeNFTByTokenId(state.tokenId);
-      setProduct(fakeNFT);
+      const nft = await utils.getNFTByTokenId(state.tokenId);
+      setProduct(nft);
     })();
   }, []);
 
