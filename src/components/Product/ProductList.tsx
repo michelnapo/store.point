@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PrimaryButton } from "..";
 import { ProductCard } from "./ProductCard";
 import utils from "../../context/utils";
 import { StoreProduct } from "../../@types/interfaces";
+import { RoutesEnum } from "../../@types/enums";
 
 export const ProductList = () => {
   const [storeProducts, setStoreProducts] = useState<StoreProduct[]>([]);
 
-  useEffect(() => {
+  const navigate = useNavigate();
 
+  useEffect(() => {
     (async () => {
       const tokenIds = await utils.getTokenIds();
       const tokenURIs = await utils.getTokensURIs(tokenIds);
@@ -34,13 +36,15 @@ export const ProductList = () => {
     <ul className="grid grid-cols-4 gap-4 flex-row flex-wrap">
       {storeProducts?.map((storeProduct, index) => (
         <li key={index}>
-          <Link
-            to={`/${storeProduct.tokenId}`}
-            className="flex flex-col gap-2 mb-2"
-          >
+          <div className="flex flex-col gap-2 mb-2">
             <ProductCard storeProduct={storeProduct} />
-            <PrimaryButton>Edit</PrimaryButton>
-          </Link>
+            <PrimaryButton onClick={() => (
+              navigate(
+                RoutesEnum.edit_product,
+                { state: { tokenId: storeProduct.tokenId } }
+              )
+            )}>Edit</PrimaryButton>
+          </div>
         </li>
       ))}
     </ul>

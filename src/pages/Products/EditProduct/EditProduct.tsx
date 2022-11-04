@@ -2,10 +2,9 @@ import PageLayout from "../../../layouts/PageLayout";
 import type { StoreProduct } from "../../../@types/interfaces";
 import { MainTitle, SettingsHeader } from "../../../components";
 import { OutlinedButton, PrimaryButton } from "../../../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getImageFromArweave } from "../../../utils";
-import { useParams } from "react-router-dom";
 import utils from "../../../context/utils";
 import { StoreContract, RoutesEnum } from "../../../@types/enums";
 
@@ -13,8 +12,8 @@ export const EditProduct = () => {
   const [storeProduct, setStoreProduct] = useState<StoreProduct | undefined>(undefined);
   const [productPrice, setProductPrice] = useState<number | undefined>(undefined);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  
-  const { tokenId } = useParams();
+
+  const { state: { tokenId } } = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export const EditProduct = () => {
 
         const product = await utils.getProductByTokenId(parseInt(tokenId));
         const nft = await utils.getDataFromStorage(tokenURI);
-        
+
         const _storeProduct = utils.getStoreProduct(product, nft);
         const _imageBlob = await getImageFromArweave(_storeProduct.image);
 
@@ -47,7 +46,7 @@ export const EditProduct = () => {
         contract: StoreContract.name,
         method: StoreContract.updateProductPrice,
         params: [parseInt(tokenId), productPrice]
-      }); 
+      });
     }
 
     alert("Price updated sucessfully");
