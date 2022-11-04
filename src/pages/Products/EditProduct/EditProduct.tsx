@@ -7,12 +7,14 @@ import { useEffect, useState } from "react";
 import { getImageFromArweave } from "../../../utils";
 import utils from "../../../context/utils";
 import { StoreContract, RoutesEnum } from "../../../@types/enums";
+import { useAppContext } from "../../../context/AppContext";
 
 export const EditProduct = () => {
   const [storeProduct, setStoreProduct] = useState<StoreProduct | undefined>(undefined);
   const [productPrice, setProductPrice] = useState<number | undefined>(undefined);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 
+  const { setToast } = useAppContext();
   const { state: { tokenId } } = useLocation();
   const navigate = useNavigate();
 
@@ -49,7 +51,7 @@ export const EditProduct = () => {
       });
     }
 
-    alert("Price updated sucessfully");
+    setToast({ color: "green-500", message: "Price updated successfully" });
     navigate(RoutesEnum.home);
   };
 
