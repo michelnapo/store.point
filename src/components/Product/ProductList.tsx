@@ -22,6 +22,14 @@ export const ProductList = () => {
     })();
   }, []);
 
+  if (storeProducts?.length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <h1>No products to show</h1>
+      </div>
+    )
+  }
+
   return (
     <ul className="grid grid-cols-4 gap-4 flex-row flex-wrap">
       {storeProducts?.map((storeProduct, index) => (
